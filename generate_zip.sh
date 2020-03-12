@@ -4,7 +4,7 @@ PACKAGE=$1
 
 LIB_DIR='venv/lib/python3.7/site-packages/'
 DESTINATION_DIR='generated'
-DESTINATION_ZIP="${DESTINATION_DIR}/${PACKAGE}.zip"
+DESTINATION_ZIP="${PACKAGE}.zip"
 
 if [[ "${PACKAGE}" == "" ]]
 then
@@ -27,6 +27,9 @@ touch "${DESTINATION_DIR}/__init__.py"
 # Copia o main.py
 cp "${PACKAGE}/main.py" "${DESTINATION_DIR}/"
 
+# Copia o pacote utils
+cp -R "utils" "${DESTINATION_DIR}/"
+
 # Cria o pacote principal
 cp -R "${PACKAGE}" "${DESTINATION_DIR}/"
 
@@ -40,4 +43,7 @@ do
     cp -R "${LIB_DIR}${dir}" generated/
 done
 
-zip -r "${DESTINATION_ZIP}" "${DESTINATION_DIR}"
+
+# Gerar o zip
+cd "${DESTINATION_DIR}"
+zip -r "${DESTINATION_ZIP}" .

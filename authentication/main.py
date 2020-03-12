@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 from http import cookies
 
 import boto3
@@ -17,10 +16,10 @@ def _get_ssm_value(ssm, key: str, decript: bool):
     return parameter.get('Parameter', {}).get('Value')
 
 
-def _get_jwt_encoded(event):
+def _get_jwt_encoded(event) -> str:
     headers = get_headers(event)
     if not headers:
-        return Exception('Headers not found')
+        raise Exception('Headers not found')
 
     cookie = cookies.SimpleCookie()
     cookie.load(
@@ -33,26 +32,30 @@ def _get_jwt_encoded(event):
 
 
 def handler(event, context):
+    jwt_encoded = _get_jwt_encoded(event)
+    if not jwt_encoded:
+        raise Exception('JWT not found')
+
     ssm = boto3.client('ssm')
 
     private_key = _get_ssm_value(ssm, PRIVATE_KEY, True)
     public_key = _get_ssm_value(ssm, PUBLIC_KEY, True)
+
     jwt = JWT(
         private_key=private_key.encode(),
         public_key=public_key.encode()
     )
 
-    # jwt_encoded = _get_jwt_encoded(event)
-
-    jwt_encoded = jwt.encode(
-        expired=datetime.now() - timedelta(seconds=1),
-        some='value'
-    )
-
-    # principal_id = _get_ssm_value(ssm, PRINCIPAL_ID_KEY, True)
+    principal_id = _get_ssm_value(ssm, PRINCIPAL_ID_KEY, True)
 
     # If decode's ok, allow access
-    jwt.decode(jwt_encoded, options={'require_exp': True, 'verify_exp': True})
+    jwt.decode(
+        jwt_encoded,
+        options={
+            'require_exp': True,
+            'verify_exp': True
+        }
+    )
 
     tmp = event['methodArn'].split(':')
     api_gateway_arn_tmp = tmp[5].split('/')
