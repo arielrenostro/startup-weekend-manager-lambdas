@@ -1,7 +1,8 @@
+from datetime import datetime, timedelta
 from http import cookies
 
-import jwt
 import boto3
+from jwt_rsa.token import JWT
 
 from authentication.aws_auth_policy import AuthPolicy
 from utils.api_gateway import get_headers
@@ -26,22 +27,32 @@ def _get_jwt_encoded(event):
         headers.get('Cookie', '')
     )
 
-    return cookie.get('jwt').encode()
+    jwt = cookie.get('jwt')
+    if jwt:
+        return jwt.value.encode()
 
 
 def handler(event, context):
-    jwt_encoded = _get_jwt_encoded(event)
-
     ssm = boto3.client('ssm')
 
-    # private = _get_ssm_value(ssm, PRIVATE_KEY, True)
-    # jwt.encode({'exp': datetime.utcnow() + datetime.utcnow(), 'some': 'value'}, private, algorithms='RS256')
-
-    principal_id = _get_ssm_value(ssm, PRINCIPAL_ID_KEY, True)
+    private_key = _get_ssm_value(ssm, PRIVATE_KEY, True)
     public_key = _get_ssm_value(ssm, PUBLIC_KEY, True)
+    jwt = JWT(
+        private_key=private_key.encode(),
+        public_key=public_key.encode()
+    )
+
+    # jwt_encoded = _get_jwt_encoded(event)
+
+    jwt_encoded = jwt.encode(
+        expired=datetime.now() - timedelta(seconds=1),
+        some='value'
+    )
+
+    # principal_id = _get_ssm_value(ssm, PRINCIPAL_ID_KEY, True)
 
     # If decode's ok, allow access
-    jwt.decode(jwt_encoded, public_key, algorithms='RS256')
+    jwt.decode(jwt_encoded, options={'require_exp': True, 'verify_exp': True})
 
     tmp = event['methodArn'].split(':')
     api_gateway_arn_tmp = tmp[5].split('/')
@@ -58,3 +69,14 @@ def handler(event, context):
     # }
 
     return policy.build()
+
+
+if __name__ == '__main__':
+    handler(
+        {
+            'headers': {
+                'Cookie': 'jwt=nanoisdnoiansodi'
+            }
+        },
+        None
+    )
