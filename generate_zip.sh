@@ -37,13 +37,12 @@ cp -R "${PACKAGE}" "${DESTINATION_DIR}/"
 rm "${DESTINATION_DIR}/${PACKAGE}/main.py"
 
 # Copia as dependencias
-for dir in $(ls -1 ${LIB_DIR} | grep -i -v -E "(.info|.egg|.dist-info|__pycache__|.pth|.so|.py)")
+for dir in $(ls -1 ${LIB_DIR})
 do
     echo ${dir}
     cp -R "${LIB_DIR}${dir}" generated/
 done
 
-
-# Gerar o zip
+## Gerar o zip
 cd "${DESTINATION_DIR}"
 zip -r "${DESTINATION_ZIP}" .
