@@ -4,7 +4,7 @@ import boto3
 from jwt_rsa.token import JWT
 
 from authentication.aws_auth_policy import AuthPolicy
-from utils.api_gateway import get_headers
+from swm.api_gateway_utils import get_headers
 
 PRINCIPAL_ID_KEY = '/SWM/Auth/PrincipalID'
 PRIVATE_KEY = '/SWM/Auth/PrivateCertificate'

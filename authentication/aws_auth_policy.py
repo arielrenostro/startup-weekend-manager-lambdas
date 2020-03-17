@@ -24,7 +24,7 @@ class AuthPolicy(object):
     awsAccountId = ""
     """The AWS account id the policy will be generated for. This is used to create the method ARNs."""
     principalId = ""
-    """The principal used for the policy, this should be a unique identifier for the end user."""
+    """The principal used for the policy, this should be a unique identifier for the end _user."""
     version = "2012-10-17"
     """The policy version used for the evaluation. This should always be '2012-10-17'"""
     pathRegex = "^[/.a-zA-Z0-9-\*]+$"

@@ -27,8 +27,8 @@ touch "${DESTINATION_DIR}/__init__.py"
 # Copia o main.py
 cp "${PACKAGE}/main.py" "${DESTINATION_DIR}/"
 
-# Copia o pacote utils
-cp -R "utils" "${DESTINATION_DIR}/"
+# Copia o pacote swm
+cp -R "swm" "${DESTINATION_DIR}/"
 
 # Cria o pacote principal
 cp -R "${PACKAGE}" "${DESTINATION_DIR}/"
