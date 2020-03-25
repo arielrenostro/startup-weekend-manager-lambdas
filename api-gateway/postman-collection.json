@@ -30,18 +30,15 @@
 			"response": []
 		},
 		{
-			"name": "login",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
+			"name": "otp-request",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
+						"type": "text",
+						"value": "application/json"
 					}
 				],
 				"body": {
@@ -54,7 +51,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/login",
+					"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/otp/request",
 					"protocol": "https",
 					"host": [
 						"e7782e2l83",
@@ -66,7 +63,48 @@
 					"path": [
 						"PRD",
 						"v1",
-						"login"
+						"otp",
+						"request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Ruan\",\n\t\"email\": \"schuartzrussi@gmail.com\",\n\t\"cellphone\": \"47991979914\",\n\t\"password\": \"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/user",
+					"protocol": "https",
+					"host": [
+						"e7782e2l83",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"PRD",
+						"v1",
+						"user"
 					]
 				}
 			},
