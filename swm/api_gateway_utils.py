@@ -37,8 +37,6 @@ def get_authorizer(event) -> dict:
 
 def get_jwt_from_authorizer(event) -> str:
     authorizer = get_authorizer(event)
-    print(authorizer)
-    print(event)
     jwt = authorizer.get('jwt')
     if jwt:
         return jwt

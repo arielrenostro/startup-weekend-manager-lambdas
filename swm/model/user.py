@@ -1,6 +1,6 @@
 import hashlib
-import json
 from datetime import datetime
+from decimal import Decimal
 
 
 class User:
@@ -12,9 +12,6 @@ class User:
     created_at: datetime
     updated_at: datetime
 
-    def to_json_str(self):
-        return json.dumps(self.to_json())
-
     def to_json(self):
         return {
             'oid': self.oid,
@@ -22,8 +19,8 @@ class User:
             'email': self.email,
             'cellphone': self.cellphone,
             'password': self.password,
-            'created_at': self.created_at.timestamp() if self.created_at else None,
-            'updated_at': self.updated_at.timestamp() if self.updated_at else None
+            'created_at': int(self.created_at.timestamp()) if self.created_at else None,
+            'updated_at': int(self.updated_at.timestamp()) if self.updated_at else None
         }
 
 
@@ -53,7 +50,7 @@ class UserBuilder:
         return self
 
     def with_password(self, password: str, encrypt: bool = True):
-        if encrypt:
+        if encrypt and password:
             self._user.password = hashlib.sha256(password.encode()).hexdigest()
         else:
             self._user.password = password
@@ -71,12 +68,12 @@ class UserBuilder:
         self._user.updated_at = updated_at
         return self
 
-    def from_json(self, item):
+    def from_json(self, item, encrypt_password=False):
         self.with_oid(item.get('oid'))
         self.with_name(item.get('name'))
         self.with_email(item.get('email'))
         self.with_cellphone(item.get('cellphone'))
-        self.with_password(item.get('password'), encrypt=False)
+        self.with_password(item.get('password'), encrypt=encrypt_password)
 
         created_at = item.get('created_at')
         if created_at:

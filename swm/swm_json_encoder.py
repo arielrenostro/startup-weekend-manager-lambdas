@@ -9,5 +9,5 @@ class SWMJSONEncoder(json.JSONEncoder):
         if isinstance(o, decimal.Decimal):
             return float(o)
         elif isinstance(o, User):
-            return o.to_json_str()
+            return o.to_json()
         return super(SWMJSONEncoder, self).default(o)

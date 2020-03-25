@@ -4,9 +4,8 @@ from datetime import datetime
 from uuid import uuid4
 
 import boto3
-from boto3.dynamodb.conditions import Attr
+from boto3.dynamodb.conditions import Attr, Or
 
-from generated.boto3.dynamodb.conditions import Or
 from swm.api_gateway_utils import buid_default_response, get_json_body
 from swm.exception.request_exception import RequestException
 from swm.model.user import UserBuilder
@@ -18,7 +17,7 @@ TABLE_ENV_DEFAULT = 'SWM_USERS'
 
 
 def get_user_from_body(body):
-    user = UserBuilder().from_json(body).build()
+    user = UserBuilder().from_json(body, encrypt_password=True).build()
     if user.oid:
         raise RequestException("OID deve ser gerado dinamicamente")
     if not user.password:
@@ -57,15 +56,12 @@ def handler(event, context):
     user.created_at = datetime.now()
     user.updated_at = datetime.now()
 
-    response = table.put_item(Item=user)
+    table.put_item(Item=user.to_json())
 
     return buid_default_response(
         status=201,
         body=json.dumps(
-            {
-                'response': response,
-                'user': user
-            },
+            user,
             cls=SWMJSONEncoder
         )
     )
