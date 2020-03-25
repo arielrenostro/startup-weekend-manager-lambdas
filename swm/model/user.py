@@ -1,6 +1,5 @@
 import hashlib
 from datetime import datetime
-from decimal import Decimal
 
 
 class User:

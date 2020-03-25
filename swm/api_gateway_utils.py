@@ -63,7 +63,8 @@ def define_set_cookie_header(response, jwt):
     headers = response.get('headers', {})
     response['headers'] = headers
 
-    headers['Set-Cookie'] = get_jwt_cookie_value(jwt)
+    if 'Set-Cookie' not in headers:
+        headers['Set-Cookie'] = get_jwt_cookie_value(jwt)
 
 
 def buid_default_response(status: int = None, body: str = None, headers: dict = None):
