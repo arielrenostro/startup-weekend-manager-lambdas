@@ -21,7 +21,7 @@ def handler(event, context):
     query_params = get_query_params(event)
 
     limit = query_params.get(LIMIT, LIMIT_DEFAULT)
-    pagination_key = query_params.get(PAGINATION_KEY)
+    pagination_key = query_params.get(PAGINATION_KEY, {})
 
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table(os.getenv(TABLE_ENV, TABLE_ENV_DEFAULT))
