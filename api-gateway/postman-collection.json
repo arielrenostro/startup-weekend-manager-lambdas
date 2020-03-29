@@ -1,0 +1,115 @@
+{
+	"info": {
+		"_postman_id": "e6482434-02b4-4920-a168-55c761e625f8",
+		"name": "SWM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "list-users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/user",
+					"protocol": "https",
+					"host": [
+						"e7782e2l83",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"PRD",
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "otp-request",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"arielrenostro@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/otp/request",
+					"protocol": "https",
+					"host": [
+						"e7782e2l83",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"PRD",
+						"v1",
+						"otp",
+						"request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Ruan\",\n\t\"email\": \"schuartzrussi@gmail.com\",\n\t\"cellphone\": \"47991979914\",\n\t\"password\": \"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/user",
+					"protocol": "https",
+					"host": [
+						"e7782e2l83",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"PRD",
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

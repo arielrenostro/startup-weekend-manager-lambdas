@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 import boto3
 from jwt_rsa.token import JWT
 
-from swm.api_gateway_utils import default_api_gw_handler, buid_default_response
-
+from swm.api_gateway_utils import buid_default_response
+from swm.wrapper.default_api_gw_handler import default_api_gw_handler
 
 PRIVATE_KEY = '/SWM/Auth/PrivateCertificate'
 PUBLIC_KEY = '/SWM/Auth/PublicCertificate'
@@ -28,7 +28,7 @@ def handler(event, context):
         public_key=public_key.encode()
     )
     token = jwt.encode(
-        expired=(datetime.now() + timedelta(days=1)).timestamp(),
+        expired=(datetime.now() + timedelta(days=365)).timestamp(),
         oid=1,
         name='Ariel'
     )

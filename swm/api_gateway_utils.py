@@ -1,6 +1,5 @@
 import json
-
-from swm.exception.request_exception import RequestException
+from http import cookies
 
 
 def get_json_body(event) -> dict:
@@ -10,30 +9,62 @@ def get_json_body(event) -> dict:
             return json.loads(body)
         except:
             pass
+    return {}
 
 
 def get_headers(event) -> dict:
-    return event.get('headers', {})
+    headers = event.get('headers')
+    if headers:
+        return headers
+    return {}
 
 
 def get_query_params(event) -> dict:
-    return event.get('queryStringParameters', {})
+    query_params = event.get('queryStringParameters')
+    if query_params:
+        return query_params
+    return {}
 
 
-def default_api_gw_handler(func):
-    def default_api_gw_handler_call(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
+def get_authorizer(event) -> dict:
+    request_context = event.get('requestContext')
+    if request_context:
+        authorizer = request_context.get('authorizer')
+        if authorizer:
+            return authorizer
+    return {}
 
-        except RequestException as e:
-            return buid_default_response(
-                status=400,
-                body=json.dumps({
-                    'ok': False,
-                    'message': e.message
-                })
-            )
-    return default_api_gw_handler_call
+
+def get_jwt_from_authorizer(event) -> str:
+    authorizer = get_authorizer(event)
+    jwt = authorizer.get('jwt')
+    if jwt:
+        return jwt
+    return ''
+
+
+def get_jwt_payload(event) -> dict:
+    authorizer = get_authorizer(event)
+    payload = authorizer.get('jwt_payload')
+    if payload:
+        return json.loads(payload)
+    return {}
+
+
+def get_jwt_cookie_value(jwt):
+    cookie = cookies.SimpleCookie()
+    cookie['jwt'] = jwt
+    cookie['jwt']['httponly'] = True
+    cookie['jwt']['path'] = '/'
+    return cookie.output().split(':')[1].strip()
+
+
+def define_set_cookie_header(response, jwt):
+    headers = response.get('headers', {})
+    response['headers'] = headers
+
+    if 'Set-Cookie' not in headers:
+        headers['Set-Cookie'] = get_jwt_cookie_value(jwt)
 
 
 def buid_default_response(status: int = None, body: str = None, headers: dict = None):

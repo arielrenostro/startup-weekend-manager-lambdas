@@ -37,12 +37,17 @@ cp -R "${PACKAGE}" "${DESTINATION_DIR}/"
 rm "${DESTINATION_DIR}/${PACKAGE}/main.py"
 
 # Copia as dependencias
-for dir in $(ls -1 ${LIB_DIR})
+for dir in $(ls -a1 ${LIB_DIR})
 do
+    if [ "${dir}" == "." ] || [ "${dir}" == ".." ]
+    then
+        continue
+    fi
+
     echo ${dir}
-    cp -R "${LIB_DIR}${dir}" generated/
+    cp -R "${LIB_DIR}${dir}" "${DESTINATION_DIR}/"
 done
 
 ## Gerar o zip
 cd "${DESTINATION_DIR}"
-zip -r "${DESTINATION_ZIP}" .
+zip -r9 "${DESTINATION_ZIP}" . .libs*

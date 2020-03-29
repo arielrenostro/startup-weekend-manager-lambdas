@@ -1,3 +1,5 @@
+import json
+from datetime import datetime, timedelta
 from http import cookies
 
 import boto3
@@ -48,15 +50,6 @@ def handler(event, context):
 
     principal_id = _get_ssm_value(ssm, PRINCIPAL_ID_KEY, True)
 
-    # If decode's ok, allow access
-    jwt.decode(
-        jwt_encoded,
-        options={
-            'require_exp': True,
-            'verify_exp': True
-        }
-    )
-
     tmp = event['methodArn'].split(':')
     api_gateway_arn_tmp = tmp[5].split('/')
     aws_account_id = tmp[4]
@@ -65,11 +58,30 @@ def handler(event, context):
     policy.restApiId = api_gateway_arn_tmp[0]
     policy.region = tmp[3]
     policy.stage = api_gateway_arn_tmp[1]
-    policy.allowAllMethods()
 
-    # policy['context'] = {
-    #     'jwt': ''
-    # }
+    try:
+        # If decode's ok, allow access
+        decoded = jwt.decode(
+            jwt_encoded,
+            options={
+                'require_exp': True,
+                'verify_exp': True
+            }
+        )
+
+        policy.allowAllMethods()
+        policy.context = {
+            'jwt_payload': json.dumps(decoded),
+            'jwt': jwt.encode(
+                **decoded,
+                expired=(datetime.now() + timedelta(hours=3)).timestamp(),
+            )
+        }
+        print(policy.context)
+        print(f'Allowed to {decoded.get("oid")} - {decoded.get("name")}')
+    except:
+        policy.denyAllMethods()
+        print(f'Denied to {jwt_encoded}')
 
     return policy.build()
 

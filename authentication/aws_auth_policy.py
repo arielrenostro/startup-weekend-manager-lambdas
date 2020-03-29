@@ -45,6 +45,8 @@ class AuthPolicy(object):
     stage = "*"
     """The name of the stage used in the policy. By default this is set to '*'"""
 
+    context = None
+
     def __init__(self, principal, awsAccountId):
         self.awsAccountId = awsAccountId
         self.principalId = principal
@@ -164,5 +166,8 @@ class AuthPolicy(object):
 
         policy['policyDocument']['Statement'].extend(self._getStatementForEffect("Allow", self.allowMethods))
         policy['policyDocument']['Statement'].extend(self._getStatementForEffect("Deny", self.denyMethods))
+
+        if self.context:
+            policy['context'] = self.context
 
         return policy
