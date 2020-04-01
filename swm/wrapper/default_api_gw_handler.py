@@ -13,7 +13,7 @@ def default_api_gw_handler(func):
 
         except RequestException as e:
             response = buid_default_response(
-                status=400,
+                status=e.status_code,
                 body=json.dumps({
                     'ok': False,
                     'message': e.message

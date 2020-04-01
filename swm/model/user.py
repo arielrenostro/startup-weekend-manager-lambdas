@@ -2,6 +2,16 @@ import hashlib
 from datetime import datetime
 
 
+class UserType:
+    NORMAL = 'NORMAL'
+    ADMIN = 'ADMIN'
+
+    VALUES = {
+        NORMAL,
+        ADMIN
+    }
+
+
 class User:
     oid: str
     name: str
@@ -10,8 +20,9 @@ class User:
     password: str
     created_at: datetime
     updated_at: datetime
+    type_: str
 
-    def to_json(self):
+    def to_dict(self):
         return {
             'oid': self.oid,
             'name': self.name,
@@ -19,7 +30,8 @@ class User:
             'cellphone': self.cellphone,
             'password': self.password,
             'created_at': int(self.created_at.timestamp()) if self.created_at else None,
-            'updated_at': int(self.updated_at.timestamp()) if self.updated_at else None
+            'updated_at': int(self.updated_at.timestamp()) if self.updated_at else None,
+            'type': self.type_
         }
 
 
@@ -67,12 +79,18 @@ class UserBuilder:
         self._user.updated_at = updated_at
         return self
 
+    def with_type(self, type_: str):
+        if type_ in UserType.VALUES:
+            self._user.type_ = type_
+        return self
+
     def from_json(self, item, encrypt_password=False):
         self.with_oid(item.get('oid'))
         self.with_name(item.get('name'))
         self.with_email(item.get('email'))
         self.with_cellphone(item.get('cellphone'))
         self.with_password(item.get('password'), encrypt=encrypt_password)
+        self.with_type(item.get('type', UserType.NORMAL))
 
         created_at = item.get('created_at')
         if created_at:

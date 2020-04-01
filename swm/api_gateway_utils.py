@@ -35,6 +35,13 @@ def get_authorizer(event) -> dict:
     return {}
 
 
+def get_path_request(event) -> str:
+    path = event.get('path')
+    if path:
+        return path
+    return ''
+
+
 def get_jwt_from_authorizer(event) -> str:
     authorizer = get_authorizer(event)
     jwt = authorizer.get('jwt')

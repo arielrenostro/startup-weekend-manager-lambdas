@@ -109,6 +109,47 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "otp-confirm",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"otp\": \"341232\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/otp/confirm",
+					"protocol": "https",
+					"host": [
+						"e7782e2l83",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"PRD",
+						"v1",
+						"otp",
+						"confirm"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}

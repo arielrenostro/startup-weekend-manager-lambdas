@@ -56,7 +56,7 @@ def handler(event, context):
     user.created_at = datetime.now()
     user.updated_at = datetime.now()
 
-    table.put_item(Item=user.to_json())
+    table.put_item(Item=user.to_dict())
 
     return buid_default_response(
         status=201,
