@@ -2,8 +2,8 @@ import json
 
 from swm.api_gateway_utils import buid_default_response, get_json_body
 from swm.exception.request_exception import RequestException
-from swm.facade import user as UserFacade
-from swm.model.user import UserBuilder
+from swm.facade import pitch as PitchFacade
+from swm.model.pitch import PitchBuilder
 from swm.swm_json_encoder import SWMJSONEncoder
 from swm.wrapper.default_api_gw_handler import default_api_gw_handler
 
@@ -14,14 +14,15 @@ def handler(event, context):
     if not body:
         raise RequestException("Request inválido!")
 
-    user = UserBuilder().from_json(body, encrypt_password=True).build()
+    pitch = PitchBuilder().from_json(body).build()
 
-    UserFacade.create_user(user)
+    oid_user = body.get('oid_user')
+    PitchFacade.create_pitch(pitch, oid_user)
 
     return buid_default_response(
         status=201,
         body=json.dumps(
-            user,
+            pitch,
             cls=SWMJSONEncoder
         )
     )
@@ -29,5 +30,5 @@ def handler(event, context):
 
 if __name__ == '__main__':
     print(
-        handler({'body': '{"name": "Ruan", "email": "schuartzrussi@gmail.com", "cellphone": "47991979914", "password": "123456"}'}, None)
+        handler({'body': '{"name": "Teste", "oid_user": "008bfdcf-85a9-460a-8d41-49ea23936a9c"}'}, None)
     )

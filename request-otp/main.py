@@ -1,6 +1,8 @@
 import json
 import os
+import smtplib
 from datetime import datetime, timedelta
+from email.mime.text import MIMEText
 
 import boto3
 from jwt_rsa.token import JWT
@@ -18,6 +20,12 @@ SEND_SMS_DISABLED = 'SEND_SMS_DISABLED'
 
 TOTALVOICE_TOKEN = 'TOTALVOICE_TOKEN'
 TOTALVOICE_HOST = 'TOTALVOICE_HOST'
+
+SMTP_HOST = 'SMTP_HOST'
+SMTP_PORT = 'SMTP_PORT'
+SMTP_USER = 'SMTP_USER'
+SMTP_PASSWD = 'SMTP_PASSWD'
+SMTP_TIMEOUT = 'SMTP_TIMEOUT'
 
 PRIVATE_KEY = '/SWM/Auth/PrivateCertificate'
 PUBLIC_KEY = '/SWM/Auth/PublicCertificate'
@@ -71,6 +79,28 @@ def get_key_value_param(event):
     return field, value
 
 
+def send_email(code_text, user):
+    try:
+        smtp_host = os.getenv(SMTP_HOST)
+        smtp_port = int(os.getenv(SMTP_PORT))
+        smtp_user = os.getenv(SMTP_USER)
+        smtp_password = os.getenv(SMTP_PASSWD)
+        smtp_timeout = int(os.getenv(SMTP_TIMEOUT, '10'))
+
+        with smtplib.SMTP(smtp_host, smtp_port, timeout=smtp_timeout) as smtp:
+            smtp.starttls()
+            smtp.login(smtp_user, smtp_password)
+
+            msg = MIMEText(code_text)
+            msg['Subject'] = 'Código de acesso Startup Weekend Manager'
+            msg['From'] = smtp_user
+            msg['To'] = user.email
+
+            smtp.sendmail(smtp_user, user.email, msg.as_string())
+    except Exception as e:
+        print(f'Falha ao enviar o e-mail! {e}')
+
+
 @default_api_gw_handler
 def handler(event, context):
     field, value = get_key_value_param(event)
@@ -81,19 +111,20 @@ def handler(event, context):
         'Set-Cookie': get_jwt_cookie_value(jwt_token)
     }
 
-    if 'true' != os.getenv(SEND_SMS_DISABLED, 'false').lower():
-        user = UserFacade.get_user(field, value)
-        if user:
-            cellphone = user.cellphone
-
+    user = UserFacade.get_user(field, value)
+    if user:
+        code_text = f'Código para acessar o Startup Weekend {code.code}'
+        if 'true' != os.getenv(SEND_SMS_DISABLED, 'false').lower():
             client = Cliente(access_token=os.getenv(TOTALVOICE_TOKEN), host=os.getenv(TOTALVOICE_HOST))
-            client.sms.enviar(cellphone, f'Código para acessar o StartupWeekend {code.code}')
+            client.sms.enviar(user.cellphone, code_text)
+
+        send_email(code_text, user)
 
     return buid_default_response(
         status=200,
         body=json.dumps(
             {
-                'message': 'Um código de verificação de identidade foi enviado para o seu telefone '
+                'message': 'Um código de verificação de identidade foi enviado para o seu telefone e e-mail '
                            'caso o telefone ou e-mail informado esteja cadastrado'
             },
             cls=SWMJSONEncoder
@@ -103,4 +134,4 @@ def handler(event, context):
 
 
 if __name__ == '__main__':
-    handler({'body': '{"cellphone": "47992181825"}'}, None)
+    print(handler({'body': '{"cellphone": "47992181825"}'}, None))

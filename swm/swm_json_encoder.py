@@ -1,6 +1,7 @@
 import decimal
 import json
 
+from swm.model.pitch import Pitch
 from swm.model.session import Session
 from swm.model.user import User
 
@@ -14,6 +15,9 @@ class SWMJSONEncoder(json.JSONEncoder):
             return o.to_dict()
 
         elif isinstance(o, Session):
+            return o.to_dict()
+
+        elif isinstance(o, Pitch):
             return o.to_dict()
 
         return super(SWMJSONEncoder, self).default(o)

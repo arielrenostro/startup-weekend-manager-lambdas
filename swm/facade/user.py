@@ -1,8 +1,11 @@
 import os
+from datetime import datetime
+from uuid import uuid4
 
 import boto3
 from boto3.dynamodb.conditions import Attr
 
+from swm.business import user as UserBusiness
 from swm.model.user import UserBuilder
 
 TABLE_ENV = 'USER_TABLE'
@@ -13,7 +16,6 @@ def get_user(field, value):
     table = _get_table()
 
     query = table.scan(
-        Limit=1,
         FilterExpression=Attr(field).eq(value)
     )
 
@@ -22,12 +24,16 @@ def get_user(field, value):
         return UserBuilder().from_json(items[0]).build()
 
 
-def get_user_from_email(email):
+def get_user_by_email(email):
     return get_user('email', email)
 
 
-def get_user_from_cellphone(cellphone):
+def get_user_by_cellphone(cellphone):
     return get_user('cellphone', cellphone)
+
+
+def get_user_by_oid(oid):
+    return get_user('oid', oid)
 
 
 def list_users(limit, pagination_key):
@@ -46,6 +52,26 @@ def list_users(limit, pagination_key):
         users.append(user_)
 
     return users, query.get('LastEvaluatedKey')
+
+
+def save(user):
+    table = _get_table()
+
+    if not user.oid:
+        user.oid = str(uuid4())
+        user.created_at = datetime.now()
+    user.updated_at = datetime.now()
+
+    table.put_item(Item=user.to_dict())
+
+
+def create_user(user):
+    user_by_email = get_user_by_email(user.email)
+    user_by_cellphone = get_user_by_cellphone(user.cellphone)
+
+    UserBusiness.create_user(user, user_by_cellphone, user_by_email)
+
+    save(user)
 
 
 def _get_table():

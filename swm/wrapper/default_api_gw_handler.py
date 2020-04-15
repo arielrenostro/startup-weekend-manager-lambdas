@@ -1,4 +1,5 @@
 import json
+import traceback
 from functools import wraps
 
 from swm.api_gateway_utils import buid_default_response, get_jwt_from_authorizer, define_set_cookie_header
@@ -21,6 +22,7 @@ def default_api_gw_handler(func):
             )
 
         except Exception as e:
+            traceback.print_exc()
             response = buid_default_response(
                 status=500,
                 body=json.dumps({

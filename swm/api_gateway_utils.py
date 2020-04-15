@@ -42,6 +42,13 @@ def get_path_request(event) -> str:
     return ''
 
 
+def get_method_request(event) -> str:
+    method = event.get('httpMethod')
+    if method:
+        return method
+    return ''
+
+
 def get_jwt_from_authorizer(event) -> str:
     authorizer = get_authorizer(event)
     jwt = authorizer.get('jwt')

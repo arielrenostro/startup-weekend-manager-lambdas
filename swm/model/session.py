@@ -41,6 +41,7 @@ class UserSession:
 class Session:
     type_: str
     user: UserSession
+    real_user: User
     data: dict
 
     def __init__(self):
@@ -67,6 +68,7 @@ class SessionBuilder:
 
     def with_user(self, user: User):
         self._session.user = UserSession(user)
+        self._session.real_user = user
         return self
 
     def with_type(self, type_):
