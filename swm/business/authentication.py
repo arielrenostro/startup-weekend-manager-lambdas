@@ -9,7 +9,8 @@ ENDPOINTS_BY_SESSION_TYPE = {
     ],
     SessionType.LOGGED: [
         '/v1/user',
-        '/v1/pitch'
+        '/v1/pitch',
+        '/v1/pitch/vote'
     ],
     SessionType.OTP_REQUEST: [
         '/v1/otp/confirm',
@@ -24,7 +25,8 @@ ENDPOINTS_BY_USER_TYPE = {
     },
     UserType.NORMAL: {
         '/v1/user': ['GET'],
-        '/v1/pitch': ['GET']
+        '/v1/pitch': ['GET'],
+        '/v1/pitch/vote': ['PUT']
     },
     UserType.ADMIN: {
         '/v1/pitch': '*'

@@ -3,13 +3,24 @@ from datetime import datetime
 from swm.model.user import User
 
 
+class PitchVote:
+    oid_user: str
+    date: datetime
+
+    def to_dict(self):
+        return {
+            'oid_user': self.oid_user,
+            'date': int(self.date.timestamp()) if self.date else None,
+        }
+
+
 class Pitch:
     oid: str
     name: str
     user: User
     created_at: datetime
     updated_at: datetime
-    votes: int
+    votes: []
     approved: bool
 
     def to_dict(self):
@@ -85,7 +96,7 @@ class PitchBuilder:
         self.with_oid(item.get('oid'))
         self.with_name(item.get('name'))
         self.with_user(item.get('user'))
-        self.with_votes(int(item.get('votes')) if 'votes' in item else 0)
+        self.with_votes(item.get('votes'))
         self.with_approved(item.get('approved'))
 
         created_at = item.get('created_at')

@@ -11,7 +11,7 @@ def get_session_from_event(event) -> Session:
 
 
 def _populate_updated_user(session: Session) -> None:
-    session.user = _get_user(session.user.oid)
+    session.real_user = _get_user(session.user.oid)
 
 
 def _get_user(oid_user) -> User:

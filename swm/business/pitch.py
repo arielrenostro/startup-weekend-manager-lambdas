@@ -1,5 +1,7 @@
+from datetime import datetime
+
 from swm.exception.business_exception import BusinessException
-from swm.model.pitch import Pitch
+from swm.model.pitch import Pitch, PitchVote
 from swm.model.session import Session
 from swm.model.user import User
 
@@ -17,7 +19,7 @@ def create_pitch(pitch: Pitch, pitch_by_name: Pitch, user: User):
         raise BusinessException('Já existe um Pitch com este nome de ideia')
 
     pitch.user = user
-    pitch.votes = 0
+    pitch.votes = []
     pitch.approved = False
 
 
@@ -30,4 +32,9 @@ def vote_pitch(pitch: Pitch, session: Session):
         raise BusinessException('Usuário sem votos disponíveis!')
 
     user.available_votes -= 1
-    pitch.votes += 1
+
+    pitch_vote = PitchVote()
+    pitch_vote.oid_user = user.oid
+    pitch_vote.date = datetime.now()
+
+    pitch.votes.append(pitch_vote)
