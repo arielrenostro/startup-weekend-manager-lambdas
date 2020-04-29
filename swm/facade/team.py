@@ -47,7 +47,7 @@ def _build_from_json(items, load_users):
         if team.leader:
             team.leader = UserFacade.get_user_by_oid(team.leader.oid, load_team=False)
         if team.members:
-            team.members = [UserFacade.get_user_by_oid(m.oid) for m in team.members]
+            team.members = [UserFacade.get_user_by_oid(m.oid, load_team=False) for m in team.members]
     return team
 
 
