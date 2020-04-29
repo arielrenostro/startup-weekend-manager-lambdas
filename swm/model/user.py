@@ -12,6 +12,13 @@ class UserType:
     }
 
 
+class TempTeam:
+    oid: str
+
+    def __init__(self, oid):
+        self.oid = oid
+
+
 class User:
     oid: str
     name: str
@@ -22,6 +29,7 @@ class User:
     updated_at: datetime
     type_: str
     available_votes: int
+    team = None
 
     def to_dict(self):
         return {
@@ -33,7 +41,8 @@ class User:
             'created_at': int(self.created_at.timestamp()) if self.created_at else None,
             'updated_at': int(self.updated_at.timestamp()) if self.updated_at else None,
             'type': self.type_,
-            'available_votes': self.available_votes
+            'available_votes': self.available_votes,
+            'oid_team': self.team.oid if self.team else None
         }
 
 
@@ -90,6 +99,11 @@ class UserBuilder:
         self._user.available_votes = available_votes
         return self
 
+    def with_oid_team(self, oid_team):
+        if oid_team:
+            self._user.team = TempTeam(oid_team)
+        return self
+
     def from_json(self, item, encrypt_password=False):
         self.with_oid(item.get('oid'))
         self.with_name(item.get('name'))
@@ -98,6 +112,7 @@ class UserBuilder:
         self.with_password(item.get('password'), encrypt=encrypt_password)
         self.with_type(item.get('type', UserType.NORMAL))
         self.with_available_votes(item.get('available_votes', 5))
+        self.with_oid_team(item.get('oid_team'))
 
         created_at = item.get('created_at')
         if created_at:

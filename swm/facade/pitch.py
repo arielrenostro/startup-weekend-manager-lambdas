@@ -67,7 +67,7 @@ def create_pitch(pitch: Pitch, oid_user: str):
 def vote_pitch(oid_pitch, session):
     pitch = _get_pitch_by_oid(oid_pitch)
 
-    PitchBusiness.vote_pitch(pitch, session)
+    PitchBusiness.vote_pitch(pitch, session)  # TODO -> Implements the current_phase check! Only in VOTE_PITCH
 
     save(pitch)
     _save_user(session.real_user)
@@ -86,7 +86,7 @@ def _get_pitch_by_oid(oid_pitch):
     )
 
     items = query['Items']
-    if len(items) > 0:
+    if len(items) > 0:  # TODO -> Select user after find a Pitch or create a TempUser like Team
         return PitchBuilder().from_json(items[0]).build()
 
 

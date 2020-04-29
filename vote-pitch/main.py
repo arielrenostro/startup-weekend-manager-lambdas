@@ -27,5 +27,17 @@ def handler(event, context):
 
 if __name__ == '__main__':
     print(
-        handler({'body': '{"name": "Teste", "oid_user": "008bfdcf-85a9-460a-8d41-49ea23936a9c"}'}, None)
+        handler(
+            {
+                'queryStringParameters': {
+                    "oid_pitch": "cade9983-7df8-42eb-8c5d-0ba31a1056f4"
+                },
+                'requestContext': {
+                    'authorizer': {
+                        'jwt_payload': '{"type": "LOGGED","user": {"oid": "008bfdcf-85a9-460a-8d41-49ea23936a9c","name": "Ariel","email": "arielrenostro@gmail.com","cellphone": "47992181824","created_at": 1585099807,"updated_at": 1586914329,"type": "ADMIN"},"data": {},"exp": 1588123554,"nbf": 1588112703}'
+                    }
+                }
+            },
+            None
+        )
     )

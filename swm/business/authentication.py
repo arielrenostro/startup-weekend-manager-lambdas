@@ -10,7 +10,9 @@ ENDPOINTS_BY_SESSION_TYPE = {
     SessionType.LOGGED: [
         '/v1/user',
         '/v1/pitch',
-        '/v1/pitch/vote'
+        '/v1/pitch/vote',
+        '/v1/phase/current',
+        '/v1/team'
     ],
     SessionType.OTP_REQUEST: [
         '/v1/otp/confirm',
@@ -26,10 +28,9 @@ ENDPOINTS_BY_USER_TYPE = {
     UserType.NORMAL: {
         '/v1/user': ['GET'],
         '/v1/pitch': ['GET'],
-        '/v1/pitch/vote': ['PUT']
-    },
-    UserType.ADMIN: {
-        '/v1/pitch': '*'
+        '/v1/pitch/vote': ['PUT'],
+        '/v1/phase/current': ['PUT'],
+        '/v1/team': ['GET'],
     }
 }
 
@@ -43,7 +44,7 @@ def validate_user(event, session: Session):
 
         paths = ENDPOINTS_BY_USER_TYPE.get(user_type, {})
         method_by_path = paths.get(path, [])
-        if UserType.ADMIN != user_type and method_by_path != '*' and method not in method_by_path:
+        if method_by_path != '*' and method not in method_by_path:
             raise BusinessException('Usuário inválido para este endpoint!')
 
 
@@ -55,9 +56,15 @@ def validate_session(event, session: Session):
         raise BusinessException('Sessão inválida para este endpoint!')
 
 
+def is_admin(session):
+    user_type = session.user.type_ if session.user else None
+    return UserType.ADMIN == user_type
+
+
 def validate_authentication(event, session):
-    validate_session(event, session)
-    validate_user(event, session)
+    if not is_admin(session):
+        validate_session(event, session)
+        validate_user(event, session)
 
 
 def validate_jwt_fail(event, jwt_exception):

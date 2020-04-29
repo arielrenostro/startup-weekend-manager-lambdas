@@ -30,7 +30,7 @@ class Pitch:
             'oid_user': self.user.oid if self.user else None,
             'created_at': int(self.created_at.timestamp()) if self.created_at else None,
             'updated_at': int(self.updated_at.timestamp()) if self.updated_at else None,
-            'votes': self.votes,
+            'votes': [v.to_dict() for v in self.votes],
             'approved': self.approved
         }
 

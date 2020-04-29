@@ -12,7 +12,7 @@ TABLE_ENV = 'USER_TABLE'
 TABLE_ENV_DEFAULT = 'SWM_USERS'
 
 
-def get_user(field, value):
+def get_user(field, value, load_team=True):
     table = _get_table()
 
     query = table.scan(
@@ -21,7 +21,14 @@ def get_user(field, value):
 
     items = query['Items']
     if len(items) > 0:
-        return UserBuilder().from_json(items[0]).build()
+        user = UserBuilder().from_json(items[0]).build()
+
+        # Overrides the "TempTeam" for the real team
+        if user.team and load_team:
+            from swm.facade import team as TeamFacade
+            user.team = TeamFacade.get_team_by_oid(user.team.oid, load_users=False)
+
+        return user
 
 
 def get_user_by_email(email):
@@ -32,8 +39,8 @@ def get_user_by_cellphone(cellphone):
     return get_user('cellphone', cellphone)
 
 
-def get_user_by_oid(oid):
-    return get_user('oid', oid)
+def get_user_by_oid(oid, load_team=True):
+    return get_user('oid', oid, load_team=load_team)
 
 
 def list_users(limit, pagination_key):
