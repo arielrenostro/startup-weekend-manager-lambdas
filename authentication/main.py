@@ -15,6 +15,7 @@ from swm.model.session import SessionBuilder
 PRINCIPAL_ID_KEY = '/SWM/Auth/PrincipalID'
 PRIVATE_KEY = '/SWM/Auth/PrivateCertificate'
 PUBLIC_KEY = '/SWM/Auth/PublicCertificate'
+BEARER_LENGTH = len("Bearer")
 
 
 def _get_ssm_value(ssm, key: str, decript: bool):
@@ -27,14 +28,28 @@ def _get_jwt_encoded(event) -> str:
     if not headers:
         raise Exception('Headers not found')
 
+    jwt = _get_jwt_by_header(headers)
+    if not jwt:
+        jwt = _get_jwt_by_cookie(headers)
+
+    if jwt:
+        return jwt.encode()
+
+
+def _get_jwt_by_header(headers):
+    authorization = headers.get('Authorization')
+    if authorization:
+        return authorization[BEARER_LENGTH + 1:]  # +1 = space
+
+
+def _get_jwt_by_cookie(headers):
     cookie = cookies.SimpleCookie()
     cookie.load(
         headers.get('Cookie', '')
     )
-
     jwt = cookie.get('jwt')
     if jwt:
-        return jwt.value.encode()
+        return jwt.value
 
 
 def _create_jwt(ssm):
@@ -123,6 +138,7 @@ def handler(event, context):
 
 
 if __name__ == '__main__':
+    # print('testebatatao'[4:])
     handler(
         {
             'headers': {

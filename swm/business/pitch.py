@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from swm.exception.business_exception import BusinessException
+from swm.model.phase import Phase
 from swm.model.pitch import Pitch, PitchVote
 from swm.model.session import Session
 from swm.model.user import User
@@ -23,7 +24,11 @@ def create_pitch(pitch: Pitch, pitch_by_name: Pitch, user: User):
     pitch.approved = False
 
 
-def vote_pitch(pitch: Pitch, session: Session):
+def vote_pitch(pitch: Pitch, session: Session, current_phase: Phase):
+    from swm.business import phase as PhaseBusiness
+    if not PhaseBusiness.is_vote_pitch(current_phase):
+        raise BusinessException(f'Fase atual "{current_phase.description}" não permite que seja realizado o voto do pitch.')
+
     if not pitch:
         raise BusinessException('Pitch não encontrado!')
 

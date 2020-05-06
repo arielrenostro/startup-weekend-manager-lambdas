@@ -3,11 +3,13 @@ from datetime import datetime
 from swm.exception.business_exception import BusinessException
 from swm.model.phase import PhaseBuilder, Phase
 
+VOTE_PITCH = 'VOTE_PITCH'
+
 PHASES = [
     PhaseBuilder().with_name('NOT_STARTED').with_description('Não iniciado').build(),
     PhaseBuilder().with_name('OPENING').with_description('Abertura do evento').build(),
     PhaseBuilder().with_name('PITCH_TIME').with_description('Pitch Time').build(),
-    PhaseBuilder().with_name('VOTE_PITCH').with_description('Votação dos pitch\'s').build(),
+    PhaseBuilder().with_name(VOTE_PITCH).with_description('Votação dos pitch\'s').build(),
     PhaseBuilder().with_name('ASSEMBLING_TEAMS').with_description('Montagem das equipes').build(),
     PhaseBuilder().with_name('WORK_HARD').with_description('Work hard').build(),
     PhaseBuilder().with_name('JUDGES_VOTE').with_description('Votação dos juízes').build(),
@@ -43,3 +45,7 @@ def select_phase_by_name(phase_name, current_phase_provider) -> (Phase, Phase):
     phase.selected_at = datetime.now()
 
     return current_phase, phase
+
+
+def is_vote_pitch(current_phase: Phase):
+    return current_phase.name == VOTE_PITCH

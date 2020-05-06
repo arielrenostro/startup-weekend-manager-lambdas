@@ -59,7 +59,7 @@ def create_pitch(pitch: Pitch, oid_user: str):
     user = _get_user(oid_user)
     pitch_by_name = get_pitch_by_name(pitch.name)
 
-    PitchBusiness.create_pitch(pitch, pitch_by_name, user)
+    PitchBusiness.create_pitch(pitch, pitch_by_name, user) # TODO -> Validate current_phase to allow only in PITCH_TIME
 
     save(pitch)
 
@@ -67,7 +67,10 @@ def create_pitch(pitch: Pitch, oid_user: str):
 def vote_pitch(oid_pitch, session):
     pitch = _get_pitch_by_oid(oid_pitch)
 
-    PitchBusiness.vote_pitch(pitch, session)  # TODO -> Implements the current_phase check! Only in VOTE_PITCH
+    from swm.facade import phase as PhaseFacade
+    current_phase = PhaseFacade.get_current_phase()
+
+    PitchBusiness.vote_pitch(pitch, session, current_phase)
 
     save(pitch)
     _save_user(session.real_user)
@@ -86,8 +89,9 @@ def _get_pitch_by_oid(oid_pitch):
     )
 
     items = query['Items']
-    if len(items) > 0:  # TODO -> Select user after find a Pitch or create a TempUser like Team
-        return PitchBuilder().from_json(items[0]).build()
+    if len(items) > 0:
+        item = items[0]
+        return _build_from_json(item)
 
 
 def _get_user(oid_user) -> User:

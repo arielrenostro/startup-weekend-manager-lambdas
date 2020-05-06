@@ -57,7 +57,7 @@ def validate_session(event, session: Session):
 
 
 def is_admin(session):
-    user_type = session.user.type_ if session.user else None
+    user_type = session.user.type_ if session and session.user else None
     return UserType.ADMIN == user_type
 
 

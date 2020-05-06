@@ -81,7 +81,8 @@ def handler(event, context):
 
     jwt_token = _generate_jwt_token(user)
     headers = {
-        'Set-Cookie': get_jwt_cookie_value(jwt_token)
+        'Set-Cookie': get_jwt_cookie_value(jwt_token),
+        'X-SWM-AUTHORIZATION': jwt_token
     }
 
     return buid_default_response(

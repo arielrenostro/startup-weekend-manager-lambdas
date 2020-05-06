@@ -81,6 +81,7 @@ def get_key_value_param(event):
 
 def send_email(code_text, user):
     try:
+        print(f'Trying to send e-mail to {user.email}')
         smtp_host = os.getenv(SMTP_HOST)
         smtp_port = int(os.getenv(SMTP_PORT))
         smtp_user = os.getenv(SMTP_USER)
@@ -96,9 +97,17 @@ def send_email(code_text, user):
             msg['From'] = smtp_user
             msg['To'] = user.email
 
+            print(f'Sending e-mail to {user.email}')
             smtp.sendmail(smtp_user, user.email, msg.as_string())
     except Exception as e:
-        print(f'Falha ao enviar o e-mail! {e}')
+        print(f'Failure to send e-mail! {e}')
+
+
+def send_sms(code_text, user):
+    if 'true' != os.getenv(SEND_SMS_DISABLED, 'false').lower():
+        print(f'Sending SMS to {user.cellphone}')
+        client = Cliente(access_token=os.getenv(TOTALVOICE_TOKEN), host=os.getenv(TOTALVOICE_HOST))
+        client.sms.enviar(user.cellphone, code_text)
 
 
 @default_api_gw_handler
@@ -108,16 +117,16 @@ def handler(event, context):
     code, jwt_token = generate_jwt_token(field, value)
 
     headers = {
-        'Set-Cookie': get_jwt_cookie_value(jwt_token)
+        'Set-Cookie': get_jwt_cookie_value(jwt_token),
+        'X-SWM-AUTHORIZATION': jwt_token
     }
 
+    print(f'New OTP request for {field} {value}')
     user = UserFacade.get_user(field, value)
+    print(f'User {"found" if user else "not found"}')
     if user:
         code_text = f'Código para acessar o Startup Weekend {code.code}'
-        if 'true' != os.getenv(SEND_SMS_DISABLED, 'false').lower():
-            client = Cliente(access_token=os.getenv(TOTALVOICE_TOKEN), host=os.getenv(TOTALVOICE_HOST))
-            client.sms.enviar(user.cellphone, code_text)
-
+        send_sms(code_text, user)
         send_email(code_text, user)
 
     return buid_default_response(
