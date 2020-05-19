@@ -5,10 +5,16 @@ from datetime import datetime
 class UserType:
     NORMAL = 'NORMAL'
     ADMIN = 'ADMIN'
+    DEV = 'DEV'
+    BUSINESS = 'BUSINESS'
+    DESIGN = 'DESIGN'
 
     VALUES = {
         NORMAL,
-        ADMIN
+        ADMIN,
+        DEV,
+        BUSINESS,
+        DESIGN,
     }
 
 

@@ -16,13 +16,14 @@ def handler(event, context):
     body = get_json_body(event)
     phase_name = body.get('phase')
 
-    old_phase, actual_phase = PhaseFacade.select_phase_by_name(phase_name)
+    old_phase, actual_phase, message = PhaseFacade.select_phase_by_name(phase_name)
 
     return buid_default_response(
         status=200,
         body=json.dumps({
             'oldPhase': old_phase,
-            'actualPhase': actual_phase
+            'actualPhase': actual_phase,
+            'message': message
         },
             cls=SWMJSONEncoder
         )
@@ -30,4 +31,4 @@ def handler(event, context):
 
 
 if __name__ == '__main__':
-    print(handler({'body': ''}, None))
+    print(handler({'body': '{"phase": "WORK_HARD"}'}, None))

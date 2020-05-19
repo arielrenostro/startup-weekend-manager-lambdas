@@ -3,17 +3,24 @@ from datetime import datetime
 from swm.exception.business_exception import BusinessException
 from swm.model.phase import PhaseBuilder, Phase
 
+NOT_STARTED = 'NOT_STARTED'
+OPENING = 'OPENING'
+PITCH_TIME = 'PITCH_TIME'
 VOTE_PITCH = 'VOTE_PITCH'
+ASSEMBLING_TEAMS = 'ASSEMBLING_TEAMS'
+WORK_HARD = 'WORK_HARD'
+JUDGES_VOTE = 'JUDGES_VOTE'
+FINISHED = 'FINISHED'
 
 PHASES = [
-    PhaseBuilder().with_name('NOT_STARTED').with_description('Não iniciado').build(),
-    PhaseBuilder().with_name('OPENING').with_description('Abertura do evento').build(),
-    PhaseBuilder().with_name('PITCH_TIME').with_description('Pitch Time').build(),
+    PhaseBuilder().with_name(NOT_STARTED).with_description('Não iniciado').build(),
+    PhaseBuilder().with_name(OPENING).with_description('Abertura do evento').build(),
+    PhaseBuilder().with_name(PITCH_TIME).with_description('Pitch Time').build(),
     PhaseBuilder().with_name(VOTE_PITCH).with_description('Votação dos pitch\'s').build(),
-    PhaseBuilder().with_name('ASSEMBLING_TEAMS').with_description('Montagem das equipes').build(),
-    PhaseBuilder().with_name('WORK_HARD').with_description('Work hard').build(),
-    PhaseBuilder().with_name('JUDGES_VOTE').with_description('Votação dos juízes').build(),
-    PhaseBuilder().with_name('FINISHED').with_description('Finalizado').build(),
+    PhaseBuilder().with_name(ASSEMBLING_TEAMS).with_description('Montagem das equipes').build(),
+    PhaseBuilder().with_name(WORK_HARD).with_description('Work hard').build(),
+    PhaseBuilder().with_name(JUDGES_VOTE).with_description('Votação dos juízes').build(),
+    PhaseBuilder().with_name(FINISHED).with_description('Finalizado').build(),
 ]
 
 

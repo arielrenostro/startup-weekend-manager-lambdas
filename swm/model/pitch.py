@@ -41,7 +41,7 @@ class PitchBuilder:
     _user: User
     _created_at: datetime
     _updated_at: datetime
-    _votes: int
+    _votes: []
     _approved: bool
 
     def __init__(self):
@@ -85,7 +85,14 @@ class PitchBuilder:
         return self
 
     def with_votes(self, votes):
-        self._votes = votes
+        if votes:
+            pitch_votes = []
+            for vote in votes:
+                pich_vote = PitchVote()
+                pich_vote.oid_user = vote['oid_user']
+                pich_vote.date = datetime.fromtimestamp(vote['date'])
+                pitch_votes.append(pich_vote)
+            self._votes = pitch_votes
         return self
 
     def with_approved(self, approved):
