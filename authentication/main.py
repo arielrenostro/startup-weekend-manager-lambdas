@@ -37,7 +37,7 @@ def _get_jwt_encoded(event) -> str:
 
 
 def _get_jwt_by_header(headers):
-    authorization = headers.get('Authorization')
+    authorization = headers.get('Authorization', headers.get('authorization'))
     if authorization:
         return authorization[BEARER_LENGTH + 1:]  # +1 = space
 
@@ -45,7 +45,7 @@ def _get_jwt_by_header(headers):
 def _get_jwt_by_cookie(headers):
     cookie = cookies.SimpleCookie()
     cookie.load(
-        headers.get('Cookie', '')
+        headers.get('Cookie', headers.get('cookie', ''))
     )
     jwt = cookie.get('jwt')
     if jwt:

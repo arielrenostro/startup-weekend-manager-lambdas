@@ -70,6 +70,7 @@ def get_jwt_cookie_value(jwt):
     cookie['jwt'] = jwt
     cookie['jwt']['httponly'] = True
     cookie['jwt']['path'] = '/'
+    cookie['jwt']['secure'] = 'true'
     return cookie.output().split(':')[1].strip()
 
 
@@ -85,9 +86,6 @@ def buid_default_response(status: int = None, body: str = None, headers: dict = 
 
     if not headers.get('Content-Type'):
         headers['Content-Type'] = 'application/json'
-
-    if not headers.get('Access-Control-Allow-Origin'):
-        headers['Access-Control-Allow-Origin'] = '*'
 
     return {
         'statusCode': status,
