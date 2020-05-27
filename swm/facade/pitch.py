@@ -59,6 +59,7 @@ def create_pitch(pitch: Pitch, oid_user: str):
     user = _get_user(oid_user)
     pitch_by_name = get_pitch_by_name(pitch.name)
 
+    # TODO -> Validate if user already created a pitch
     PitchBusiness.create_pitch(pitch, pitch_by_name, user)  # TODO -> Validate current_phase to allow only in PITCH_TIME
 
     save(pitch)

@@ -50,7 +50,7 @@ class PitchBuilder:
         self._user = None
         self._created_at = None
         self._updated_at = None
-        self._votes = None
+        self._votes = []
         self._approved = None
 
     def build(self) -> Pitch:

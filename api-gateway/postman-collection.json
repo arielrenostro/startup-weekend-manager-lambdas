@@ -6,245 +6,419 @@
 	},
 	"item": [
 		{
-			"name": "list-users",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/user",
-					"protocol": "https",
-					"host": [
-						"e7782e2l83",
-						"execute-api",
-						"us-east-1",
-						"amazonaws",
-						"com"
-					],
-					"path": [
-						"PRD",
-						"v1",
-						"user"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "otp-request",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"email\": \"arielrenostro@gmail.com\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "event-phase",
+			"item": [
+				{
+					"name": "list-possible-phases",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/phase",
+							"protocol": "https",
+							"host": [
+								"e7782e2l83",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"PRD",
+								"v1",
+								"phase"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/otp/request",
-					"protocol": "https",
-					"host": [
-						"e7782e2l83",
-						"execute-api",
-						"us-east-1",
-						"amazonaws",
-						"com"
-					],
-					"path": [
-						"PRD",
-						"v1",
-						"otp",
-						"request"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "create-user",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\": \"Ariel usuario\",\n\t\"email\": \"ariel@lazaros.com.br\",\n\t\"cellphone\": \"47991979914\",\n\t\"password\": \"123456\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "current-phase",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/phase/current",
+							"protocol": "https",
+							"host": [
+								"e7782e2l83",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"PRD",
+								"v1",
+								"phase",
+								"current"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/user",
-					"protocol": "https",
-					"host": [
-						"e7782e2l83",
-						"execute-api",
-						"us-east-1",
-						"amazonaws",
-						"com"
-					],
-					"path": [
-						"PRD",
-						"v1",
-						"user"
-					]
+				{
+					"name": "select-phase",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"phase\": \"NOT_STARTED\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/phase",
+							"protocol": "https",
+							"host": [
+								"e7782e2l83",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"PRD",
+								"v1",
+								"phase"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "otp-confirm",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"otp\": \"553022\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "users",
+			"item": [
+				{
+					"name": "create-user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Ariel usuario\",\n\t\"email\": \"ariel@lazaros.com.br\",\n\t\"cellphone\": \"47991979914\",\n\t\"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/user",
+							"protocol": "https",
+							"host": [
+								"e7782e2l83",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"PRD",
+								"v1",
+								"user"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/otp/confirm",
-					"protocol": "https",
-					"host": [
-						"e7782e2l83",
-						"execute-api",
-						"us-east-1",
-						"amazonaws",
-						"com"
-					],
-					"path": [
-						"PRD",
-						"v1",
-						"otp",
-						"confirm"
-					]
+				{
+					"name": "list-users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/user",
+							"protocol": "https",
+							"host": [
+								"e7782e2l83",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"PRD",
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "create-pitch",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\": \"Gerenciador do evento\",\n\t\"oid_user\": \"008bfdcf-85a9-460a-8d41-49ea23936a9c\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "pitch",
+			"item": [
+				{
+					"name": "create-pitch",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Gerenciador do evento\",\n\t\"oid_user\": \"008bfdcf-85a9-460a-8d41-49ea23936a9c\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/pitch",
+							"protocol": "https",
+							"host": [
+								"e7782e2l83",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"PRD",
+								"v1",
+								"pitch"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/pitch",
-					"protocol": "https",
-					"host": [
-						"e7782e2l83",
-						"execute-api",
-						"us-east-1",
-						"amazonaws",
-						"com"
-					],
-					"path": [
-						"PRD",
-						"v1",
-						"pitch"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "list-pitchs",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/pitch",
-					"protocol": "https",
-					"host": [
-						"e7782e2l83",
-						"execute-api",
-						"us-east-1",
-						"amazonaws",
-						"com"
-					],
-					"path": [
-						"PRD",
-						"v1",
-						"pitch"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "vote-pitch",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"url": {
-					"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/pitch/vote?oid_pitch=cade9983-7df8-42eb-8c5d-0ba31a1056f4",
-					"protocol": "https",
-					"host": [
-						"e7782e2l83",
-						"execute-api",
-						"us-east-1",
-						"amazonaws",
-						"com"
-					],
-					"path": [
-						"PRD",
-						"v1",
-						"pitch",
-						"vote"
-					],
-					"query": [
-						{
-							"key": "oid_pitch",
-							"value": "cade9983-7df8-42eb-8c5d-0ba31a1056f4"
+				{
+					"name": "list-pitchs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/pitch",
+							"protocol": "https",
+							"host": [
+								"e7782e2l83",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"PRD",
+								"v1",
+								"pitch"
+							]
 						}
-					]
+					},
+					"response": []
+				},
+				{
+					"name": "vote-pitch",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/pitch/vote?oid_pitch=cade9983-7df8-42eb-8c5d-0ba31a1056f4",
+							"protocol": "https",
+							"host": [
+								"e7782e2l83",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"PRD",
+								"v1",
+								"pitch",
+								"vote"
+							],
+							"query": [
+								{
+									"key": "oid_pitch",
+									"value": "cade9983-7df8-42eb-8c5d-0ba31a1056f4"
+								}
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "login",
+			"item": [
+				{
+					"name": "otp-request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"arielrenostro@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/otp/request",
+							"protocol": "https",
+							"host": [
+								"e7782e2l83",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"PRD",
+								"v1",
+								"otp",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "otp-confirm",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"otp\": \"253110\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/otp/confirm",
+							"protocol": "https",
+							"host": [
+								"e7782e2l83",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"PRD",
+								"v1",
+								"otp",
+								"confirm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/logout",
+							"protocol": "https",
+							"host": [
+								"e7782e2l83",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"PRD",
+								"v1",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "team",
+			"item": [
+				{
+					"name": "list-team",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/team",
+							"protocol": "https",
+							"host": [
+								"e7782e2l83",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"PRD",
+								"v1",
+								"team"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"protocolProfileBehavior": {}
