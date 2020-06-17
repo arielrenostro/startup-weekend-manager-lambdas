@@ -3,7 +3,7 @@ from datetime import datetime
 from uuid import uuid4
 
 import boto3
-from boto3.dynamodb.conditions import Attr
+from boto3.dynamodb.conditions import Attr, And
 
 from swm.business import pitch as PitchBusiness
 from swm.model.pitch import Pitch, PitchBuilder
@@ -55,12 +55,43 @@ def get_pitch_by_name(name):
             return _build_from_json(item)
 
 
+def is_user_have_pitch(user, oid_pitch_ignore=None):
+    if user:
+        if oid_pitch_ignore:
+            filter_ = And(
+                Attr('oid_user').eq(user.oid),
+                Attr('oid').ne(oid_pitch_ignore)
+            )
+        else:
+            filter_ = Attr('oid_user').eq(user.oid)
+
+        table = _get_table()
+        query = table.scan(FilterExpression=filter_)
+
+        items = query['Items']
+        return len(items) > 0
+
+
 def create_pitch(pitch: Pitch, oid_user: str):
     user = _get_user(oid_user)
     pitch_by_name = get_pitch_by_name(pitch.name)
+    user_have_pitch = is_user_have_pitch(user)
 
-    # TODO -> Validate if user already created a pitch
-    PitchBusiness.create_pitch(pitch, pitch_by_name, user)  # TODO -> Validate current_phase to allow only in PITCH_TIME
+    from swm.facade import phase as PhaseFacade
+    current_phase = PhaseFacade.get_current_phase()
+
+    PitchBusiness.create_pitch(pitch, pitch_by_name, user_have_pitch, current_phase, user)
+
+    save(pitch)
+
+
+def edit_pitch(oid: str, pitch: Pitch, oid_user: str):
+    user = _get_user(oid_user)
+    pitch_by_name = get_pitch_by_name(pitch.name)
+    user_have_pitch = is_user_have_pitch(user, oid)
+    pitch_by_oid = _get_pitch_by_oid(oid)
+
+    PitchBusiness.edit_pitch(pitch, pitch_by_name, pitch_by_oid, user_have_pitch, user)
 
     save(pitch)
 

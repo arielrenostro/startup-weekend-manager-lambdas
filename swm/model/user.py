@@ -8,6 +8,7 @@ class UserType:
     DEV = 'DEV'
     BUSINESS = 'BUSINESS'
     DESIGN = 'DESIGN'
+    JUDGE = 'JUDGE'
 
     VALUES = {
         NORMAL,
@@ -15,6 +16,7 @@ class UserType:
         DEV,
         BUSINESS,
         DESIGN,
+        NORMAL,
     }
 
 

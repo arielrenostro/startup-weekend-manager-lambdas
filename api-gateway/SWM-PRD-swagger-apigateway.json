@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "2020-05-27T00:14:50Z",
+    "version": "2020-06-17T02:10:45Z",
     "title": "SWM"
   },
   "host": "e7782e2l83.execute-api.us-east-1.amazonaws.com",
@@ -341,21 +341,24 @@
         }
       }
     },
-    "/v1/pitch/vote": {
+    "/v1/pitch/{oid}": {
       "put": {
         "produces": [
           "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "oid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
         ],
         "responses": {
           "200": {
             "description": "200 response",
             "schema": {
               "$ref": "#/definitions/Empty"
-            },
-            "headers": {
-              "Access-Control-Allow-Origin": {
-                "type": "string"
-              }
             }
           }
         },
@@ -369,22 +372,68 @@
         "produces": [
           "application/json"
         ],
+        "parameters": [
+          {
+            "name": "oid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "200 response",
             "schema": {
               "$ref": "#/definitions/Empty"
-            },
-            "headers": {
-              "Access-Control-Allow-Origin": {
-                "type": "string"
-              },
-              "Access-Control-Allow-Methods": {
-                "type": "string"
-              },
-              "Access-Control-Allow-Headers": {
-                "type": "string"
-              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/pitch/{oid}/vote": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "oid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        },
+        "security": [
+          {
+            "SWM-Authorizer": []
+          }
+        ]
+      },
+      "options": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "oid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
             }
           }
         }
@@ -506,6 +555,82 @@
               "Access-Control-Allow-Headers": {
                 "type": "string"
               }
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/{oid}/photo": {
+      "get": {
+        "produces": [
+          "image/jpeg",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "oid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        },
+        "security": [
+          {
+            "SWM-Authorizer": []
+          }
+        ]
+      },
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "oid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        },
+        "security": [
+          {
+            "SWM-Authorizer": []
+          }
+        ]
+      },
+      "options": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "oid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
             }
           }
         }

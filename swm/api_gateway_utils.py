@@ -26,6 +26,13 @@ def get_query_params(event) -> dict:
     return {}
 
 
+def get_path_params(event) -> dict:
+    path_params = event.get('pathParameters')
+    if path_params:
+        return path_params
+    return {}
+
+
 def get_authorizer(event) -> dict:
     request_context = event.get('requestContext')
     if request_context:
@@ -74,7 +81,7 @@ def get_jwt_cookie_value(jwt):
     return cookie.output().split(':')[1].strip()
 
 
-def buid_default_response(status: int = None, body: str = None, headers: dict = None):
+def buid_default_response(status: int = None, body: str = None, headers: dict = None, base64encoded: bool = False):
     if not status:
         status = 200
 
@@ -90,5 +97,6 @@ def buid_default_response(status: int = None, body: str = None, headers: dict = 
     return {
         'statusCode': status,
         'body': body,
-        'headers': headers
+        'headers': headers,
+        'isBase64Encoded': base64encoded,
     }

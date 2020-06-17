@@ -14,7 +14,7 @@ TABLE_ENV_DEFAULT = 'SWM_TEAM'
 TEAMS_SIZE = TeamBusiness.TEAMS_SIZE
 
 
-def list_teams(limit, pagination_key):  # TODO -> Implementar validação para restringir tamanho de equipe
+def list_teams(limit, pagination_key):
     table = _get_table()
 
     params = {

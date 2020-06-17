@@ -6,6 +6,7 @@ from swm.model.pitch import Pitch, PitchVote
 from swm.model.session import Session
 from swm.model.team import Team
 from swm.model.user import User
+from swm.model.userphoto import UserPhoto
 
 
 class SWMJSONEncoder(json.JSONEncoder):
@@ -29,6 +30,9 @@ class SWMJSONEncoder(json.JSONEncoder):
             return o.to_dict()
 
         elif isinstance(o, Team):
+            return o.to_dict()
+
+        elif isinstance(o, UserPhoto):
             return o.to_dict()
 
         return super(SWMJSONEncoder, self).default(o)

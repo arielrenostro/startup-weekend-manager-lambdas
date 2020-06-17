@@ -15,7 +15,8 @@ ENDPOINTS_BY_SESSION_TYPE = {
         '/v1/pitch/vote',
         '/v1/phase/current',
         '/v1/team',
-        '/v1/logout'
+        '/v1/logout',
+        '/v1/user/{oid}/photo',
     ],
     SessionType.OTP_REQUEST: [
         '/v1/otp/confirm',
@@ -30,6 +31,7 @@ ENDPOINTS_BY_USER_TYPE = {
     },
     UserType.NORMAL: {
         '/v1/user': ['GET'],
+        '/v1/user/{oid}/photo': ['POST'],
         '/v1/pitch': ['GET'],
         '/v1/pitch/vote': ['PUT'],
         '/v1/phase/current': ['PUT'],
@@ -45,8 +47,16 @@ def validate_user(event, session: Session):
         method = get_method_request(event)
 
         user_type = session.user.type_ if session.user else None
+        normal_user = user_type in [UserType.DESIGN, UserType.BUSINESS, UserType.DEV, UserType.JUDGE]
 
         paths = ENDPOINTS_BY_USER_TYPE.get(user_type, {})
+
+        if normal_user and user_type != UserType.NORMAL:
+            paths = {
+                **paths,
+                **ENDPOINTS_BY_USER_TYPE.get(UserType.NORMAL, {})
+            }
+
         method_by_path = paths.get(path, [])
         if method_by_path != '*' and method not in method_by_path:
             raise BusinessException(f'Usuário inválido para este endpoint! [user_type={user_type}, method={method}, path={path}]')
@@ -99,5 +109,6 @@ def define_cors_headers(event, headers_to_define: dict):
         'Access-Control-Allow-Credentials': 'true',
         'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT, DELETE, HEAD',
         'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-SWM-AUTHORIZATION,Cookie',
+        'Access-Control-Expose-Headers': 'X-SWM-AUTHORIZATION,Authorization',
         'Access-Control-Max-Age': '1728000'
     })
