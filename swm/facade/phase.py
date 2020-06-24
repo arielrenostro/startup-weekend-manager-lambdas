@@ -1,4 +1,5 @@
 import os
+from typing import List
 from uuid import uuid4
 
 import boto3
@@ -33,7 +34,13 @@ def get_current_phase() -> Phase:
         return PhaseBuilder().from_json(item).build()
 
 
-def list_phases() -> Phase:
+def next_phase():
+    current_phase = get_current_phase()
+    next_phase_ = PhaseBusiness.next_phase(current_phase)
+    return select_phase_by_name(next_phase_.name)
+
+
+def list_phases() -> List[Phase]:
     return PhaseBusiness.list_phases()
 
 

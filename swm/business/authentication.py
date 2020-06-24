@@ -15,6 +15,7 @@ ENDPOINTS_BY_SESSION_TYPE = {
         '/v1/pitch/vote',
         '/v1/phase/current',
         '/v1/team',
+        '/v1/team/request',
         '/v1/logout',
         '/v1/user/{oid}/photo',
     ],
@@ -36,6 +37,9 @@ ENDPOINTS_BY_USER_TYPE = {
         '/v1/pitch/vote': ['PUT'],
         '/v1/phase/current': ['PUT'],
         '/v1/team': ['GET'],
+        '/v1/team/request': ['GET', 'POST'],
+        '/v1/team/request/{oid}/confirm': ['POST'], # TODO Validate if {oid} works to validate paths
+        '/v1/team/request/{oid}/reject': ['POST'],
         '/v1/logout': ['POST']
     }
 }

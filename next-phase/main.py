@@ -1,6 +1,6 @@
 import json
 
-from swm.api_gateway_utils import buid_default_response, get_json_body
+from swm.api_gateway_utils import buid_default_response
 from swm.facade import phase as PhaseFacade
 from swm.swm_json_encoder import SWMJSONEncoder
 from swm.wrapper.default_api_gw_handler import default_api_gw_handler
@@ -13,10 +13,7 @@ PAGINATION_KEY = 'paginationKey'
 
 @default_api_gw_handler
 def handler(event, context):
-    body = get_json_body(event)
-    phase_name = body.get('phase')
-
-    old_phase, actual_phase, message = PhaseFacade.select_phase_by_name(phase_name)
+    old_phase, actual_phase, message = PhaseFacade.next_phase()
 
     return buid_default_response(
         status=200,
@@ -31,4 +28,4 @@ def handler(event, context):
 
 
 if __name__ == '__main__':
-    print(handler({'body': '{"phase": "WORK_HARD"}'}, None))
+    print(handler({'body': ''}, None))

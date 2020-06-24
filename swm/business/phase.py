@@ -56,3 +56,15 @@ def select_phase_by_name(phase_name, current_phase_provider) -> (Phase, Phase):
 
 def is_vote_pitch(current_phase: Phase):
     return current_phase.name == VOTE_PITCH
+
+
+def next_phase(current_phase):
+    idx = -1
+    for phase in PHASES:
+        idx += 1
+        if phase.name == current_phase.name:
+            break
+    idx += 1
+    if idx > len(PHASES) - 1:
+        raise BusinessException("Já está na última fase")
+    return PHASES[idx]
