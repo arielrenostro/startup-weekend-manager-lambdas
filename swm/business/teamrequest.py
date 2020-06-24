@@ -1,4 +1,5 @@
 from swm.business import phase as PhaseBusiness
+from swm.business import team as TeamBusiness
 from swm.exception.business_exception import BusinessException
 from swm.model.phase import Phase
 from swm.model.teamrequest import TeamRequestStatus, TeamRequest
@@ -31,8 +32,12 @@ def validate_new_request(
 def approve_request(team_request: TeamRequest, user: User, _get_user_provider, _get_team_provider):
     _validate_request(team_request, user)
 
-    user = _get_user_provider(team_request.oid_user)
     team = _get_team_provider(team_request.oid_team)
+
+    if len(team.members) >= TeamBusiness.TEAMS_SIZE:
+        raise BusinessException(f"O time já está cheio")
+
+    user = _get_user_provider(team_request.oid_user)
 
     team_request.status = TeamRequestStatus.APPROVED
 

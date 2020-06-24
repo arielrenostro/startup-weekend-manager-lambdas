@@ -79,6 +79,14 @@ def create_new_request(user: User, oid_team) -> TeamRequest:
     return team_request
 
 
+def reject_pending_requests(oid_user: str):
+    requests = get_requests_by_oid_user(oid_user)
+    for request in requests:
+        if TeamRequestStatus.PENDING == request.status:
+            request.status = TeamRequestStatus.REJECTED
+            save(request)
+
+
 def approve_request(user: User, oid_team_request: str):
     def _get_user_provider(_oid):
         return UserFacade.get_user_by_oid(_oid)
@@ -88,6 +96,8 @@ def approve_request(user: User, oid_team_request: str):
 
     team_request = get_by_oid(oid_team_request)
     user, team = TeamRequestBusiness.approve_request(team_request, user, _get_user_provider, _get_team_provider)
+
+    reject_pending_requests(user.oid)
 
     save(team_request)
     UserFacade.save(user)
