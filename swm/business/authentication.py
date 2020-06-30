@@ -11,6 +11,7 @@ ENDPOINTS_BY_SESSION_TYPE = {
     ],
     SessionType.LOGGED: [
         '/v1/user',
+        '/v1/user/current',
         '/v1/user/{oid}/photo',
         '/v1/pitch',
         '/v1/pitch/{oid}/vote',
@@ -35,13 +36,14 @@ ENDPOINTS_BY_USER_TYPE = {
     },
     UserType.NORMAL: {
         '/v1/user': ['GET'],
+        '/v1/user/current': ['GET'],
         '/v1/user/{oid}/photo': ['POST'],
         '/v1/pitch': ['GET'],
         '/v1/pitch/{oid}/vote': ['POST'],
         '/v1/phase/current': ['GET'],
         '/v1/team': ['GET'],
         '/v1/team/request': ['GET', 'POST'],
-        '/v1/team/request/{oid}/confirm': ['POST'],  # TODO Validate if {oid} works to validate paths
+        '/v1/team/request/{oid}/confirm': ['POST'],
         '/v1/team/request/{oid}/reject': ['POST'],
         '/v1/logout': ['POST']
     }
