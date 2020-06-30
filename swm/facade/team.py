@@ -6,6 +6,8 @@ import boto3
 from boto3.dynamodb.conditions import Attr
 
 from swm.business import team as TeamBusiness
+from swm.exception.business_exception import BusinessException
+from swm.facade import phase as PhaseFacade
 from swm.model.team import TeamBuilder, Team
 
 TABLE_ENV = 'TEAM_TABLE'
@@ -57,6 +59,29 @@ def save(team: Team):
 
 def get_non_completed_teams(teams):
     return TeamBusiness.get_non_completed_teams(teams)
+
+
+def define_teams_position(oid_teams):
+    if not PhaseFacade.is_judges_vote():
+        raise BusinessException("Não é a fase correta para definir a posição das equipes")
+
+    if len(oid_teams) != 3:
+        raise BusinessException("Devem ser informadas 3 equipes!")
+
+    teams = []
+
+    for oid in oid_teams:
+        team_by_oid = get_team_by_oid(oid, load_users=False)
+        if team_by_oid is None:
+            raise BusinessException(f"Time {oid} não encontrado")
+        teams.append(team_by_oid)
+
+    for i in range(len(teams)):
+        team = teams[i]
+        team.position = i + 1
+        save(team)
+
+    return teams
 
 
 def _build_from_json(item, load_users):

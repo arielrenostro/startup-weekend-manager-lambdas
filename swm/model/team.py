@@ -16,6 +16,7 @@ class Team:
     name: str
     leader: User
     members: List[User]
+    position: int
     created_at: datetime
     updated_at: datetime
 
@@ -26,6 +27,7 @@ class Team:
         self.members = []
         self.created_at = None
         self.updated_at = None
+        self.position = None
 
     def to_dict(self):
         return {
@@ -34,7 +36,8 @@ class Team:
             'oid_leader': self.leader.oid if self.leader else None,
             'created_at': int(self.created_at.timestamp()) if self.created_at else None,
             'updated_at': int(self.updated_at.timestamp()) if self.updated_at else None,
-            'members': [m.oid for m in self.members]
+            'members': [m.oid for m in self.members],
+            'position': self.position,
         }
 
 
@@ -45,6 +48,7 @@ class TeamBuilder:
     _members: List[User]
     _created_at: datetime
     _updated_at: datetime
+    _position: int
 
     def __init__(self):
         self._oid = None
@@ -53,6 +57,7 @@ class TeamBuilder:
         self._members = None
         self._created_at = None
         self._updated_at = None
+        self._position = None
 
     def build(self):
         team = Team()
@@ -62,6 +67,7 @@ class TeamBuilder:
         team.members = self._members
         team.created_at = self._created_at
         team.updated_at = self._updated_at
+        team.position = self._position
         return team
 
     def with_oid(self, oid: str):
@@ -97,12 +103,17 @@ class TeamBuilder:
         self._updated_at = updated_at
         return self
 
+    def with_position(self, position):
+        self._position = position
+        return self
+
     def from_json(self, json):
         self.with_oid(json.get('oid'))
         self.with_name(json.get('name'))
         self.with_oid_leader(json.get('oid_leader'))
         self.with_leader(json.get('leader'))
         self.with_members(json.get('members'))
+        self.with_position(json.get('position'))
 
         created_at = json.get('created_at')
         if created_at:

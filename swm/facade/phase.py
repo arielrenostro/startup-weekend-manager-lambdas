@@ -153,6 +153,11 @@ def process_vote_pitch():
     return f"Criadas as equipes: {', '.join(list(map(lambda x: x.name, created_teams)))}"
 
 
+def is_judges_vote() -> bool:
+    phase = get_current_phase()
+    return PhaseBusiness.is_jugdes_vote(phase)
+
+
 def _get_table():
     dynamodb = boto3.resource('dynamodb')
     return dynamodb.Table(os.getenv(TABLE_ENV, TABLE_ENV_DEFAULT))

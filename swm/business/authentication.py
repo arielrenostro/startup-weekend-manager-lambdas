@@ -1,6 +1,6 @@
 import os
 
-from swm.api_gateway_utils import get_path_request, get_method_request
+from swm.api_gateway_utils import get_path_request, get_method_request, get_resource_request
 from swm.exception.business_exception import BusinessException
 from swm.model.session import SessionType, Session
 from swm.model.user import UserType
@@ -11,13 +11,16 @@ ENDPOINTS_BY_SESSION_TYPE = {
     ],
     SessionType.LOGGED: [
         '/v1/user',
+        '/v1/user/{oid}/photo',
         '/v1/pitch',
-        '/v1/pitch/vote',
+        '/v1/pitch/{oid}/vote',
         '/v1/phase/current',
         '/v1/team',
         '/v1/team/request',
+        '/v1/team/request/{oid}/confirm',
+        '/v1/team/request/{oid}/reject',
         '/v1/logout',
-        '/v1/user/{oid}/photo',
+
     ],
     SessionType.OTP_REQUEST: [
         '/v1/otp/confirm',
@@ -34,11 +37,11 @@ ENDPOINTS_BY_USER_TYPE = {
         '/v1/user': ['GET'],
         '/v1/user/{oid}/photo': ['POST'],
         '/v1/pitch': ['GET'],
-        '/v1/pitch/vote': ['PUT'],
-        '/v1/phase/current': ['PUT'],
+        '/v1/pitch/{oid}/vote': ['POST'],
+        '/v1/phase/current': ['GET'],
         '/v1/team': ['GET'],
         '/v1/team/request': ['GET', 'POST'],
-        '/v1/team/request/{oid}/confirm': ['POST'], # TODO Validate if {oid} works to validate paths
+        '/v1/team/request/{oid}/confirm': ['POST'],  # TODO Validate if {oid} works to validate paths
         '/v1/team/request/{oid}/reject': ['POST'],
         '/v1/logout': ['POST']
     }
@@ -47,7 +50,7 @@ ENDPOINTS_BY_USER_TYPE = {
 
 def validate_user(event, session: Session):
     if session:
-        path = get_path_request(event)
+        path = get_resource_request(event)
         method = get_method_request(event)
 
         user_type = session.user.type_ if session.user else None
@@ -63,11 +66,12 @@ def validate_user(event, session: Session):
 
         method_by_path = paths.get(path, [])
         if method_by_path != '*' and method not in method_by_path:
-            raise BusinessException(f'Usuário inválido para este endpoint! [user_type={user_type}, method={method}, path={path}]')
+            raise BusinessException(
+                f'Usuário inválido para este endpoint! [user_type={user_type}, method={method}, path={path}]')
 
 
 def validate_session(event, session: Session):
-    path = get_path_request(event)
+    path = get_resource_request(event)
 
     session_type = session.type_ if session else None
     if path not in ENDPOINTS_BY_SESSION_TYPE.get(session_type, []):

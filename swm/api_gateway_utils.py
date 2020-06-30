@@ -49,6 +49,13 @@ def get_path_request(event) -> str:
     return ''
 
 
+def get_resource_request(event) -> str:
+    resource = event.get('resource')
+    if resource:
+        return resource
+    return ''
+
+
 def get_method_request(event) -> str:
     method = event.get('httpMethod')
     if method:

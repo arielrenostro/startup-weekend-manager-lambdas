@@ -96,6 +96,31 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "next-phase",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/phase/next",
+							"protocol": "https",
+							"host": [
+								"e7782e2l83",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"PRD",
+								"v1",
+								"phase",
+								"next"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -234,6 +259,31 @@
 								"PRD",
 								"v1",
 								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "current-user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/user/current",
+							"protocol": "https",
+							"host": [
+								"e7782e2l83",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"PRD",
+								"v1",
+								"user",
+								"current"
 							]
 						}
 					},
@@ -437,7 +487,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"otp\": \"202343\"\n}",
+							"raw": "{\n\t\"otp\": \"401052\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -502,6 +552,133 @@
 			"name": "team",
 			"item": [
 				{
+					"name": "request",
+					"item": [
+						{
+							"name": "list-request",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/team/request",
+									"protocol": "https",
+									"host": [
+										"e7782e2l83",
+										"execute-api",
+										"us-east-1",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"PRD",
+										"v1",
+										"team",
+										"request"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create-request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"oid_team\": \"teste\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/team/request",
+									"protocol": "https",
+									"host": [
+										"e7782e2l83",
+										"execute-api",
+										"us-east-1",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"PRD",
+										"v1",
+										"team",
+										"request"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "confirm-request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/team/request/teste/confirm",
+									"protocol": "https",
+									"host": [
+										"e7782e2l83",
+										"execute-api",
+										"us-east-1",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"PRD",
+										"v1",
+										"team",
+										"request",
+										"teste",
+										"confirm"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "reject-request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/team/request/teste/reject",
+									"protocol": "https",
+									"host": [
+										"e7782e2l83",
+										"execute-api",
+										"us-east-1",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"PRD",
+										"v1",
+										"team",
+										"request",
+										"teste",
+										"reject"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
 					"name": "list-team",
 					"request": {
 						"method": "GET",
@@ -520,6 +697,47 @@
 								"PRD",
 								"v1",
 								"team"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "define-position",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n\t\"team1\",\n\t\"team2\",\n\t\"team3\"\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://e7782e2l83.execute-api.us-east-1.amazonaws.com/PRD/v1/team/define-position",
+							"protocol": "https",
+							"host": [
+								"e7782e2l83",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"PRD",
+								"v1",
+								"team",
+								"define-position"
 							]
 						}
 					},

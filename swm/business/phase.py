@@ -68,3 +68,7 @@ def next_phase(current_phase):
     if idx > len(PHASES) - 1:
         raise BusinessException("Já está na última fase")
     return PHASES[idx]
+
+
+def is_jugdes_vote(phase: Phase) -> bool:
+    return JUDGES_VOTE == phase.name
