@@ -12,6 +12,7 @@ class TeamRequestStatus:
 class TeamRequest:
     oid: str
     oid_user: str
+    username: str
     oid_team: str
     status: str
     created_at: datetime
@@ -20,6 +21,7 @@ class TeamRequest:
     def __init__(self):
         self.oid = None
         self.oid_user = None
+        self.username = None
         self.oid_team = None
         self.status = None
         self.created_at = None
@@ -29,6 +31,7 @@ class TeamRequest:
         return {
             'oid': self.oid,
             'oid_user': self.oid_user,
+            'username': self.username,
             'oid_team': self.oid_team,
             'status': self.status,
             'created_at': int(self.created_at.timestamp()) if self.created_at else None,
@@ -39,6 +42,7 @@ class TeamRequest:
 class TeamRequestBuilder:
     _oid: str
     _oid_user: str
+    _username: str
     _oid_team: str
     _status: str
     _created_at: datetime
@@ -47,6 +51,7 @@ class TeamRequestBuilder:
     def __init__(self):
         self._oid = None
         self._oid_user = None
+        self._username = None
         self._oid_team = None
         self._status = None
         self._created_at = None
@@ -56,6 +61,7 @@ class TeamRequestBuilder:
         team_request = TeamRequest()
         team_request.oid = self._oid
         team_request.oid_user = self._oid_user
+        team_request.username = self._username
         team_request.oid_team = self._oid_team
         team_request.status = self._status
         team_request.created_at = self._created_at
@@ -68,6 +74,10 @@ class TeamRequestBuilder:
 
     def with_oid_user(self, oid_user: str):
         self._oid_user = oid_user
+        return self
+
+    def with_username(self, username: str):
+        self._username = username
         return self
 
     def with_oid_team(self, oid_team):
@@ -89,6 +99,7 @@ class TeamRequestBuilder:
     def from_json(self, json):
         self.with_oid(json.get('oid'))
         self.with_oid_user(json.get('oid_user'))
+        self.with_username(json.get('username'))
         self.with_oid_team(json.get('oid_team'))
         self.with_status(json.get('status'))
 

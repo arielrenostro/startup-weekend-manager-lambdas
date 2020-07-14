@@ -20,6 +20,10 @@ def handler(event, context):
 
     users, last_evaluated_key = UserFacade.list_users(limit, pagination_key)
 
+    for user in users:
+        user.team = None
+        UserFacade.save(user)
+
     return buid_default_response(
         status=200,
         body=json.dumps(
@@ -30,3 +34,5 @@ def handler(event, context):
             cls=SWMJSONEncoder
         )
     )
+
+handler({}, None)

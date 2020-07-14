@@ -72,6 +72,7 @@ def create_new_request(user: User, oid_team) -> TeamRequest:
     team_request = TeamRequest()
     team_request.status = TeamRequestStatus.PENDING
     team_request.oid_user = user.oid
+    team_request.username = user.name
     team_request.oid_team = oid_team
 
     save(team_request)

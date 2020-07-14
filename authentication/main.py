@@ -17,10 +17,14 @@ PRIVATE_KEY = '/SWM/Auth/PrivateCertificate'
 PUBLIC_KEY = '/SWM/Auth/PublicCertificate'
 BEARER_LENGTH = len("Bearer")
 
+CACHE_SSM = {}
+
 
 def _get_ssm_value(ssm, key: str, decript: bool):
-    parameter = ssm.get_parameter(Name=key, WithDecryption=decript)
-    return parameter.get('Parameter', {}).get('Value')
+    if key not in CACHE_SSM:
+        parameter = ssm.get_parameter(Name=key, WithDecryption=decript)
+        CACHE_SSM[key] = parameter.get('Parameter', {}).get('Value')
+    return CACHE_SSM[key]
 
 
 def _get_jwt_encoded(event) -> str:
