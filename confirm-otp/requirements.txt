@@ -1,5 +1,5 @@
 totalvoice
-PyJWT===1.7.1
+PyJWT===2.4.0
 boto3===1.12.20
 pyjwt-rsa===0.3.0
 requests
